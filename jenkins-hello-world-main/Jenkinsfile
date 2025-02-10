@@ -21,12 +21,18 @@ pipeline {
 
                 // Run Maven Package CMD
                 sh "mvn clean package -DskipTests=true"
+
+                // Archirve the artifact
+                archiveArtifacts 'target/hello-demo-*.jar'
             }
         }
 
         stage('Unit Test'){
             steps {
                 sh "mvn test"
+                
+                // Archirve unit tests
+                junit(testResults: 'target/surefire-reports/TEST-*.xml', keepProperties: true, keepTestNames: true)
             }
         }
     }
